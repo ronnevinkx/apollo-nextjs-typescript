@@ -69,7 +69,7 @@ Start local development by running these scripts:
 ## Building the frontend app
 
 -   Run `yarn build`
--   The folder `/web/.next/server/pages/post` should now have html files for all posts retrieved via `getStaticPaths`
+-   The folder `/web/.next/server/pages/post` should now have HTML files for all posts retrieved via `getStaticPaths`
 
 ## Notes
 
