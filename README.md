@@ -62,9 +62,9 @@ Project name: **myblog-client**
 
 Start local development by running these scripts:
 
-1. Backend, TypeScript watch and compile: `yarn watch`
-2. Backend, run in development: `yarn dev`
-3. Frontend, run in development: `yarn dev`
+1. Server, TypeScript watch and compile: `yarn watch`
+2. Server, run in development: `yarn dev`
+3. Web client, run in development: `yarn dev`
 
 ## Building the frontend app
 
@@ -73,4 +73,4 @@ Start local development by running these scripts:
 
 ## Notes
 
--   Bug: when load more, click on item, use back button, then 6 are displayed but load more button is visible when it shouldn't be
+-   Bug: when clicking Load More until you have all items listed, then click on an item, use the back button, all items are displayed but the Load More button is visible when it shouldn't be.
