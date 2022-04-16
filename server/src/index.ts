@@ -1,13 +1,15 @@
-import { ApolloServer } from 'apollo-server-express';
-import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
-import { createConnection } from 'typeorm';
-import cors from 'cors';
 import 'dotenv-safe/config';
+
+import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
+import { ApolloServer } from 'apollo-server-express';
+import cors from 'cors';
 import express from 'express';
 import http from 'http';
 import path from 'path';
-import { Post } from './entities/Post';
 import { buildSchema } from 'type-graphql';
+import { createConnection } from 'typeorm';
+
+import { Post } from './entities/Post';
 import { PostResolver } from './resolvers/post';
 import { timestamp } from './utils/timestamp';
 

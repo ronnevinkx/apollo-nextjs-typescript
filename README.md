@@ -21,7 +21,6 @@ Project name: **myblog-server**
 ### Notes
 
 -   Make sure GraphQL version works with TypeGraphQL (15.8.0, not 16).
--   Local playground was remove in Apollo Server v2, with v3, use the online [Apollo Studio Explorer](https://studio.apollographql.com/sandbox/explorer)
 -   Had to install `class-validator` and `@types/validator` to get rid of some TS error on server
 
 ## Backend Steps

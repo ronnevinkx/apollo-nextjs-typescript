@@ -1,4 +1,3 @@
-import { Post } from '../entities/Post';
 import {
 	Arg,
 	Field,
@@ -9,6 +8,8 @@ import {
 	Query
 } from 'type-graphql';
 import { getConnection } from 'typeorm';
+
+import { Post } from '../entities/Post';
 
 @InputType()
 export class PostInput {
