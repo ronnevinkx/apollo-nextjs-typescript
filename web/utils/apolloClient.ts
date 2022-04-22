@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import {
 	ApolloClient,
 	HttpLink,
@@ -6,19 +5,36 @@ import {
 	NormalizedCacheObject
 } from '@apollo/client';
 import merge from 'deepmerge';
+import fetch from 'isomorphic-unfetch';
 import isEqual from 'lodash/isEqual';
+import { NextPageContext } from 'next';
 import { AppProps } from 'next/app';
+import { useMemo } from 'react';
+
+import { PaginatedPosts } from '../__generated__/graphql';
 
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
-function createApolloClient() {
+function createApolloClient(ctx: NextPageContext | null) {
+	// The `ctx` (NextPageContext) will only be present on the server.
+	// use it to extract auth headers (ctx.req) or similar.
+	const enhancedFetch = (url: string, init: any) =>
+		fetch(url, {
+			...init,
+			headers: {
+				...init.headers,
+				Cookie: ctx?.req?.headers.cookie
+			}
+		}).then(res => res);
+
 	return new ApolloClient({
 		ssrMode: typeof window === 'undefined',
 		link: new HttpLink({
 			uri: process.env.NEXT_PUBLIC_API_URL as string, // Server URL (must be absolute)
-			credentials: 'same-origin' // Additional fetch() options like `credentials` or `headers`
+			credentials: 'include', // 'include' / 'same-origin'. this includes the cookie. // Additional fetch() options like `credentials` or `headers`
+			fetch: ctx ? enhancedFetch : fetch
 		}),
 		cache: new InMemoryCache({
 			typePolicies: {
@@ -26,7 +42,10 @@ function createApolloClient() {
 					fields: {
 						posts: {
 							keyArgs: [],
-							merge(existing, incoming) {
+							merge(
+								existing: PaginatedPosts | undefined,
+								incoming: PaginatedPosts
+							): PaginatedPosts {
 								return {
 									...incoming,
 									posts: [
@@ -43,8 +62,11 @@ function createApolloClient() {
 	});
 }
 
-export function initializeApollo(initialState = null) {
-	const _apolloClient = apolloClient ?? createApolloClient();
+export function initializeApollo(
+	initialState = null,
+	ctx: NextPageContext | null = null
+) {
+	const _apolloClient = apolloClient ?? createApolloClient(ctx);
 
 	// If your page has Next.js data fetching methods that use Apollo Client, the initial state
 	// gets hydrated here

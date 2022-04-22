@@ -1,4 +1,4 @@
-import type { NextPage } from 'next';
+import type { NextPage, NextPageContext } from 'next';
 import { Layout } from '../components/Layout';
 import { PostList } from '../components/PostList';
 import { addApolloState, initializeApollo } from '../utils/apolloClient';
@@ -13,8 +13,11 @@ const Home: NextPage = () => {
 	);
 };
 
-export async function getServerSideProps() {
-	const apolloClient = initializeApollo();
+// important with getServerSideProps to pass context if it contains an auth cookie.
+// on the client this works eitherway, but to get it working on the server, make sure
+// to pass the context.
+export async function getServerSideProps(context: NextPageContext) {
+	const apolloClient = initializeApollo(null, context);
 
 	await apolloClient.query({
 		query: PostsDocument,
